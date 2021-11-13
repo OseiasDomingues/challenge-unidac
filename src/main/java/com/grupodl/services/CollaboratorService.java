@@ -27,15 +27,9 @@ public class CollaboratorService {
 	}
 
 	public void insertBreakfast(Collaborator collaborator) {
-		List<Food> foodList = foodsRepository.findAllFoods();
-		for (Food food_database : foodList) {
-			for (Food food : collaborator.getFoods()) {
-				if (food_database.getName().toUpperCase().trim().equals(food.getName().toUpperCase().trim())) {
-					System.out.println("---------------------------------" + food.getName() + "---------------------------------");
-					throw new NullPointerException();
-				}
-			}
-		}
+		
+		foodExist(collaborator);
+
 		collaboratorRepository.registerCollaborator(collaborator.getCpf(), collaborator.getName());
 		for (Food food : collaborator.getFoods()) {
 
@@ -44,4 +38,39 @@ public class CollaboratorService {
 
 	}
 
+	public void updateBreakfast(Collaborator collaborator, String cpf) {
+		
+		foodExist(collaborator);
+		
+		
+			for (Food f : collaborator.getFoods()) {
+				foodsRepository.updateFood(f.getId(), f.getName());
+			}
+			collaboratorRepository.updateCollaborator(cpf, collaborator.getName());
+	}
+
+	public void deleteBreakfast(String cpf) {
+
+		Collaborator collaborator = collaboratorRepository.findCollaboratorByCPF(cpf);
+
+		for (Food e : collaborator.getFoods()) {
+			foodsRepository.deleteFood(e.getId());
+		}
+		collaboratorRepository.deleteCollaborator(cpf);
+	}
+
+	public boolean foodExist(Collaborator collaborator) {
+		List<Food> foodList = foodsRepository.findAllFoods();
+		for (Food food_database : foodList) {
+			for (Food food : collaborator.getFoods()) {
+				if (food_database.getName().toUpperCase().trim().equals(food.getName().toUpperCase().trim())) {
+					// todo add Exception Custom
+					System.out.println(
+							"---------------------------------" + food.getName() + "---------------------------------");
+					throw new NullPointerException();
+				}
+			}
+		}
+		return false;
+	}
 }

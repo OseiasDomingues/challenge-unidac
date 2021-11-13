@@ -24,6 +24,14 @@ public interface CollaboratorRepository extends Repository<Collaborator, String>
     @Query(value = "INSERT INTO TB_Collaborator (name,cpf) values (:name,:cpf)", nativeQuery = true)
     void registerCollaborator(@Param("cpf")String cpf,@Param("name") String name);
 	
-	
+	@Modifying
+    @Transactional
+    @Query(value = "DELETE FROM TB_Collaborator where cpf=:id" , nativeQuery = true)
+    void deleteCollaborator(@Param("id") String id);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE TB_Collaborator SET name=:name WHERE cpf=:cpf", nativeQuery = true)
+    void updateCollaborator(@Param("cpf")String cpf, @Param("name")String name);   
+	
 }
