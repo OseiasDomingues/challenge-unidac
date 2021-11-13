@@ -23,6 +23,6 @@ public interface FoodsRepository extends Repository<Food, Long> {
 	@Modifying
     @Transactional
     @Query(value = "INSERT INTO TB_Foods (name,id_collaborator) values (:name,:id_collaborator)", nativeQuery = true)
-    void registerFoods(@Param("name") String name,@Param("id_collaborator")String string);
+    void registerFoods(@Param("name") String name,@Param("id_collaborator")String id_collaborator);
 
 }
