@@ -15,10 +15,10 @@ import com.grupodl.models.Food;
 public interface FoodsRepository extends Repository<Food, Long> {
 	
 	@Query(value = "SELECT * FROM TB_Foods", nativeQuery = true)
-    List<Collaborator> findAllFoods();	
+    List<Food> findAllFoods();	
 	
 	@Query(value = "SELECT * FROM TB_Foods where id=:id" , nativeQuery = true)
-    Collaborator findFoodById(@Param("id") Long id);
+    Food findFoodById(@Param("id") Long id);
 	
 	@Modifying
     @Transactional
