@@ -17,7 +17,7 @@ public interface CollaboratorRepository extends Repository<Collaborator, String>
     List<Collaborator> findAllCollaborator();	
 	
 	@Query(value = "SELECT * FROM TB_Collaborator where cpf=:id" , nativeQuery = true)
-    Collaborator findCollaboratorById(@Param("id") String id);
+    Collaborator findCollaboratorByCPF(@Param("id") String id);
 	
 	@Modifying
     @Transactional
