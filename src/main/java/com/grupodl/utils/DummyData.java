@@ -23,9 +23,9 @@ public class DummyData {
 	@PostConstruct
 	public void test() {
 		
-		Collaborator c1 = new Collaborator("10010010010", "Carlos");		
-		Collaborator c2 = new Collaborator("30030030030", "Mario");
-		Collaborator c3 = new Collaborator("40040040040", "Alfredo");
+		Collaborator c1 = new Collaborator("100.100.100-10", "Carlos");		
+		Collaborator c2 = new Collaborator("300.300.300-30", "Mario");
+		Collaborator c3 = new Collaborator("400.400.400-40", "Alfredo");
 		
 		collaboratorRepository.registerCollaborator(c1.getCpf(),c1.getName());
 		collaboratorRepository.registerCollaborator(c2.getCpf(),c2.getName());

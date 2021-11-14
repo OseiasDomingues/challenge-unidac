@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 
 
@@ -19,7 +21,10 @@ public class Collaborator implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@NotBlank
+	@Pattern(regexp = "(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)")
 	private String cpf;
+	@NotBlank
 	private String name;
 	
 	@OneToMany(mappedBy = "collaborator")

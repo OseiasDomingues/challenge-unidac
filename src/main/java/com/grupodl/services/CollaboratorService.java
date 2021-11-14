@@ -9,6 +9,8 @@ import com.grupodl.models.Collaborator;
 import com.grupodl.models.Food;
 import com.grupodl.repositories.CollaboratorRepository;
 import com.grupodl.repositories.FoodsRepository;
+import com.grupodl.services.exceptions.ResourceAlreadyExistsException;
+import com.grupodl.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class CollaboratorService {
@@ -23,12 +25,16 @@ public class CollaboratorService {
 	}
 
 	public Collaborator findCollaboratorByCpf(String cpf) {
-		return collaboratorRepository.findCollaboratorByCPF(cpf);
+		Collaborator collaborator = collaboratorRepository.findCollaboratorByCPF(cpf);
+		if(collaborator == null) {
+			throw new ResourceNotFoundException(cpf);
+		}
+		return collaborator;
 	}
 
 	public void insertBreakfast(Collaborator collaborator) {
-		
 		foodExist(collaborator);
+		cpfExist(collaborator.getCpf());
 
 		collaboratorRepository.registerCollaborator(collaborator.getCpf(), collaborator.getName());
 		for (Food food : collaborator.getFoods()) {
@@ -39,19 +45,21 @@ public class CollaboratorService {
 	}
 
 	public void updateBreakfast(Collaborator collaborator, String cpf) {
-		
+
 		foodExist(collaborator);
-		
-		
-			for (Food f : collaborator.getFoods()) {
-				foodsRepository.updateFood(f.getId(), f.getName());
-			}
-			collaboratorRepository.updateCollaborator(cpf, collaborator.getName());
+
+		for (Food f : collaborator.getFoods()) {
+			foodsRepository.updateFood(f.getId(), f.getName());
+		}
+		collaboratorRepository.updateCollaborator(cpf, collaborator.getName());
 	}
 
 	public void deleteBreakfast(String cpf) {
 
 		Collaborator collaborator = collaboratorRepository.findCollaboratorByCPF(cpf);
+		if(collaborator == null) {
+			throw new ResourceNotFoundException(cpf);
+		}
 
 		for (Food e : collaborator.getFoods()) {
 			foodsRepository.deleteFood(e.getId());
@@ -59,18 +67,26 @@ public class CollaboratorService {
 		collaboratorRepository.deleteCollaborator(cpf);
 	}
 
-	public boolean foodExist(Collaborator collaborator) {
+	public void foodExist(Collaborator collaborator) {
 		List<Food> foodList = foodsRepository.findAllFoods();
 		for (Food food_database : foodList) {
 			for (Food food : collaborator.getFoods()) {
 				if (food_database.getName().toUpperCase().trim().equals(food.getName().toUpperCase().trim())) {
-					// todo add Exception Custom
-					System.out.println(
-							"---------------------------------" + food.getName() + "---------------------------------");
-					throw new NullPointerException();
+					throw new ResourceAlreadyExistsException("O item " + food.getName() + " já existe!");
 				}
 			}
 		}
-		return false;
 	}
-}
+
+
+	private void cpfExist(String cpf) {
+		List<Collaborator> collaboratorList = collaboratorRepository.findAllCollaborator();
+		for (Collaborator collaborator_database : collaboratorList) {			
+				if (collaborator_database.getCpf().equals(cpf)) {
+					throw new ResourceAlreadyExistsException("O CPF " + cpf + " já está registrado");
+				}
+			}
+		}
+		
+	}
+
