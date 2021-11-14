@@ -20,7 +20,7 @@ public class DummyData {
 	@Autowired
 	FoodsRepository foodsRepository; 
 	
-	@PostConstruct
+	@PostConstruct 
 	public void test() {
 		
 		Collaborator c1 = new Collaborator("100.100.100-10", "Carlos");		

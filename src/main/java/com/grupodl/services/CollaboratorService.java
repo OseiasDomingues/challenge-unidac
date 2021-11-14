@@ -9,6 +9,7 @@ import com.grupodl.models.Collaborator;
 import com.grupodl.models.Food;
 import com.grupodl.repositories.CollaboratorRepository;
 import com.grupodl.repositories.FoodsRepository;
+import com.grupodl.services.exceptions.FieldInvalidException;
 import com.grupodl.services.exceptions.ResourceAlreadyExistsException;
 import com.grupodl.services.exceptions.ResourceNotFoundException;
 
@@ -49,6 +50,9 @@ public class CollaboratorService {
 		foodExist(collaborator);
 
 		for (Food f : collaborator.getFoods()) {
+			if(collaborator.getName().isEmpty() || f.getId() == null || f.getName().isBlank()) {
+				throw new FieldInvalidException("Algum campo está invalido!");
+			}
 			foodsRepository.updateFood(f.getId(), f.getName());
 		}
 		collaboratorRepository.updateCollaborator(cpf, collaborator.getName());
