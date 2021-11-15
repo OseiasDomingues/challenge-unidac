@@ -23,8 +23,7 @@ public class Food {
 	@NotNull
 	private Long id;
 	@NotBlank
-	private String name;
-	
+	private String name;	
 	@ManyToOne
 	@JoinColumn(name = "id_collaborator")	
 	@JsonIgnore

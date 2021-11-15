@@ -44,21 +44,22 @@ public class CollaboratorController {
 	
 	@PostMapping("/collaborators")
 	public ResponseEntity<Void> insertBreakfast(@RequestBody @Valid Collaborator collaborator, BindingResult result){
-		if(result.hasErrors()) {
+		if(result.hasErrors()){
 			throw new FieldInvalidException("Algum campo está invalido!");
 		}
+		System.out.println(collaborator.getFoods().toString());
 		collaboratorService.insertBreakfast(collaborator);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
-	@PutMapping("collaborators/{id}")
-    public ResponseEntity<Void> updateBreakfast(@RequestBody Collaborator collaborator, @PathVariable Long id){	
-		collaboratorService.updateBreakfast(collaborator, id);
+	@PutMapping("collaborators")
+    public ResponseEntity<Void> updateBreakfast(@RequestBody Collaborator collaborator){	
+		collaboratorService.updateBreakfast(collaborator, collaborator.getId());
 		return ResponseEntity.status(HttpStatus.OK).build();
     }
 	
-	@DeleteMapping("collaborators/{id}")
-    public ResponseEntity<Void> deleteBreakfast(@PathVariable Long id){	
-		collaboratorService.deleteBreakfast(id);
+	@DeleteMapping("collaborators")
+    public ResponseEntity<Void> deleteBreakfast(@RequestBody Collaborator collaborator){	
+		collaboratorService.deleteBreakfast(collaborator.getId());
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

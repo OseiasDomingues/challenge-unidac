@@ -35,15 +35,25 @@ public class CollaboratorService {
 
 	public void insertBreakfast(Collaborator collaborator) {
 		foodExist(collaborator);
-		cpfExist(collaborator.getCpf());
+		cpfExistInsert(collaborator.getCpf());
 
 		collaboratorRepository.registerCollaborator(collaborator.getCpf(), collaborator.getName());
 		
 		Collaborator collaboratorSave = collaboratorRepository.findCollaboratorByCPF(collaborator.getCpf());
 		
+		int i = 1;
+		
 		for (Food food : collaborator.getFoods()) {
-
-			foodsRepository.registerFoods(food.getName(), collaboratorSave.getId());			
+			
+			if(!food.getName().isEmpty()) {
+			foodsRepository.registerFoods(food.getName(), collaboratorSave.getId());	
+			}else {
+				if(i >= collaborator.getFoods().size()) {
+					throw new FieldInvalidException("Não há itens na lista");
+				}
+				i++;		
+				 
+			}
 		}
 
 	}
@@ -51,6 +61,7 @@ public class CollaboratorService {
 	public void updateBreakfast(Collaborator collaborator, Long id) {
 
 		foodExist(collaborator);
+		cpfExistUpdate(collaborator.getCpf(),id);
 
 		for (Food f : collaborator.getFoods()) {
 			if(collaborator.getName().isEmpty() || f.getId() == null || f.getName().isBlank()) {
@@ -58,7 +69,7 @@ public class CollaboratorService {
 			}
 			foodsRepository.updateFood(f.getId(), f.getName());
 		}
-		collaboratorRepository.updateCollaborator(id, collaborator.getName());
+		collaboratorRepository.updateCollaborator(id, collaborator.getName(),collaborator.getCpf());
 	}
 
 	public void deleteBreakfast(Long id) {
@@ -79,21 +90,37 @@ public class CollaboratorService {
 		for (Food food_database : foodList) {
 			for (Food food : collaborator.getFoods()) {
 				if (food_database.getName().toUpperCase().trim().equals(food.getName().toUpperCase().trim())) {
-					throw new ResourceAlreadyExistsException("O item " + food.getName() + " já existe!");
-				}
-			}
+					
+					if(collaborator.getId() != food_database.getCollaborator().getId()) {
+					throw new ResourceAlreadyExistsException("O item " + food.getName() + " já existe!");				
+					}
+			}}
 		}
 	}
 
 
-	private void cpfExist(String cpf) {
+	private void cpfExistInsert(String cpf) {
 		List<Collaborator> collaboratorList = collaboratorRepository.findAllCollaborator();
 		for (Collaborator collaborator_database : collaboratorList) {			
+				if (collaborator_database.getCpf().equals(cpf)) {						
+					throw new ResourceAlreadyExistsException("O CPF " + cpf + " já está registrado");				
+							}
+		}
+		
+	}
+	private void cpfExistUpdate(String cpf,Long id) {
+		List<Collaborator> collaboratorList = collaboratorRepository.findAllCollaborator();
+		Collaborator collaboratorCpfTest = collaboratorRepository.findCollaboratorById(id);
+		for (Collaborator collaborator_database : collaboratorList) {			
 				if (collaborator_database.getCpf().equals(cpf)) {
+					if(collaboratorCpfTest.getId() != collaborator_database.getId()) {
+						
 					throw new ResourceAlreadyExistsException("O CPF " + cpf + " já está registrado");
+					
 				}
 			}
 		}
 		
 	}
+}
 

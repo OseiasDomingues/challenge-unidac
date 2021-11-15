@@ -34,8 +34,8 @@ public interface CollaboratorRepository extends Repository<Collaborator, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE TB_Collaborator SET name=:name WHERE id=:id", nativeQuery = true)
-    void updateCollaborator(@Param("id")Long id, @Param("name")String name);
+    @Query(value = "UPDATE TB_Collaborator SET name=:name, cpf=:cpf  WHERE id=:id", nativeQuery = true)
+    void updateCollaborator(@Param("id")Long id, @Param("name")String name,@Param("cpf")String cpf);
  
 	
 }
