@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +23,7 @@ import com.grupodl.services.CollaboratorService;
 import com.grupodl.services.exceptions.FieldInvalidException;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api")
 public class CollaboratorController {
 	
@@ -35,9 +36,9 @@ public class CollaboratorController {
 		return ResponseEntity.status(HttpStatus.OK).body(listCollaborator);
 	}
 	
-	@GetMapping("/collaborators/{cpf}")
-	public ResponseEntity<Collaborator> findCollaboratorByCpf(@PathVariable String cpf){
-		Collaborator collaborator = collaboratorService.findCollaboratorByCpf(cpf);
+	@GetMapping("/collaborators/{id}")
+	public ResponseEntity<Collaborator> findCollaboratorByCpf(@PathVariable Long id){
+		Collaborator collaborator = collaboratorService.findCollaboratorById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(collaborator);
 	}
 	
@@ -49,15 +50,15 @@ public class CollaboratorController {
 		collaboratorService.insertBreakfast(collaborator);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
-	@PutMapping("collaborators/{cpf}")
-    public ResponseEntity<Void> updateBreakfast(@RequestBody Collaborator collaborator, @PathVariable String cpf){	
-		collaboratorService.updateBreakfast(collaborator, cpf);
+	@PutMapping("collaborators/{id}")
+    public ResponseEntity<Void> updateBreakfast(@RequestBody Collaborator collaborator, @PathVariable Long id){	
+		collaboratorService.updateBreakfast(collaborator, id);
 		return ResponseEntity.status(HttpStatus.OK).build();
     }
 	
-	@DeleteMapping("collaborators/{cpf}")
-    public ResponseEntity<Void> deleteBreakfast(@PathVariable String cpf){	
-		collaboratorService.deleteBreakfast(cpf);
+	@DeleteMapping("collaborators/{id}")
+    public ResponseEntity<Void> deleteBreakfast(@PathVariable Long id){	
+		collaboratorService.deleteBreakfast(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

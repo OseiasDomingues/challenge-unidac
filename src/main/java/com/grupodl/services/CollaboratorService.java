@@ -25,10 +25,10 @@ public class CollaboratorService {
 		return collaboratorRepository.findAllCollaborator();
 	}
 
-	public Collaborator findCollaboratorByCpf(String cpf) {
-		Collaborator collaborator = collaboratorRepository.findCollaboratorByCPF(cpf);
+	public Collaborator findCollaboratorById(Long id) {
+		Collaborator collaborator = collaboratorRepository.findCollaboratorById(id);
 		if(collaborator == null) {
-			throw new ResourceNotFoundException(cpf);
+			throw new ResourceNotFoundException(id);
 		}
 		return collaborator;
 	}
@@ -38,14 +38,17 @@ public class CollaboratorService {
 		cpfExist(collaborator.getCpf());
 
 		collaboratorRepository.registerCollaborator(collaborator.getCpf(), collaborator.getName());
+		
+		Collaborator collaboratorSave = collaboratorRepository.findCollaboratorByCPF(collaborator.getCpf());
+		
 		for (Food food : collaborator.getFoods()) {
 
-			foodsRepository.registerFoods(food.getName(), collaborator.getCpf());
+			foodsRepository.registerFoods(food.getName(), collaboratorSave.getId());			
 		}
 
 	}
 
-	public void updateBreakfast(Collaborator collaborator, String cpf) {
+	public void updateBreakfast(Collaborator collaborator, Long id) {
 
 		foodExist(collaborator);
 
@@ -55,20 +58,20 @@ public class CollaboratorService {
 			}
 			foodsRepository.updateFood(f.getId(), f.getName());
 		}
-		collaboratorRepository.updateCollaborator(cpf, collaborator.getName());
+		collaboratorRepository.updateCollaborator(id, collaborator.getName());
 	}
 
-	public void deleteBreakfast(String cpf) {
+	public void deleteBreakfast(Long id) {
 
-		Collaborator collaborator = collaboratorRepository.findCollaboratorByCPF(cpf);
+		Collaborator collaborator = collaboratorRepository.findCollaboratorById(id);
 		if(collaborator == null) {
-			throw new ResourceNotFoundException(cpf);
+			throw new ResourceNotFoundException(id);
 		}
 
 		for (Food e : collaborator.getFoods()) {
 			foodsRepository.deleteFood(e.getId());
 		}
-		collaboratorRepository.deleteCollaborator(cpf);
+		collaboratorRepository.deleteCollaborator(id);
 	}
 
 	public void foodExist(Collaborator collaborator) {

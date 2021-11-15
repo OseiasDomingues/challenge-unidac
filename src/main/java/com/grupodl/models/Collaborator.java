@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
 
 
 
@@ -21,6 +24,8 @@ public class Collaborator implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	@NotBlank
 	@Pattern(regexp = "(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)")
 	private String cpf;
@@ -36,7 +41,8 @@ public class Collaborator implements Serializable {
 	public Collaborator() {
 	}
 
-	public Collaborator(String cpf, String name) {
+	public Collaborator(Long id, String cpf, String name) {
+		this.id = id;
 		this.cpf = cpf;
 		this.name = name;
 	}
@@ -60,10 +66,20 @@ public class Collaborator implements Serializable {
 	public List<Food> getFoods() {
 		return foods;
 	}
+	
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cpf);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -75,7 +91,7 @@ public class Collaborator implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Collaborator other = (Collaborator) obj;
-		return Objects.equals(cpf, other.cpf);
+		return Objects.equals(id, other.id);
 	}
 
 	@Override

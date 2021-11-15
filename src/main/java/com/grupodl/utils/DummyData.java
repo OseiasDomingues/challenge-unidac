@@ -23,13 +23,14 @@ public class DummyData {
 	@PostConstruct 
 	public void test() {
 		
-		Collaborator c1 = new Collaborator("100.100.100-10", "Carlos");		
-		Collaborator c2 = new Collaborator("300.300.300-30", "Mario");
-		Collaborator c3 = new Collaborator("400.400.400-40", "Alfredo");
+		Collaborator c1 = new Collaborator(null, "100.100.100-10", "Carlos");		
+		Collaborator c2 = new Collaborator(null, "300.300.300-30", "Mario");
+		Collaborator c3 = new Collaborator(null, "400.400.400-40", "Alfredo");
 		
 		collaboratorRepository.registerCollaborator(c1.getCpf(),c1.getName());
 		collaboratorRepository.registerCollaborator(c2.getCpf(),c2.getName());
 		collaboratorRepository.registerCollaborator(c3.getCpf(),c3.getName());
+		
 		
 		Food f1 = new Food(null, "Pão",c1);
 		Food f2 = new Food(null, "Café",c2);
@@ -37,11 +38,15 @@ public class DummyData {
 		Food f4 = new Food(null, "Margarina",c1);
 		Food f5 = new Food(null, "Doce de Leite",c2);
 		
-		foodsRepository.registerFoods(f1.getName(), c1.getCpf());
-		foodsRepository.registerFoods(f2.getName(), c2.getCpf());
-		foodsRepository.registerFoods(f3.getName(), c3.getCpf());
-		foodsRepository.registerFoods(f4.getName(), c1.getCpf());
-		foodsRepository.registerFoods(f5.getName(), c2.getCpf());
+		Collaborator c1A = collaboratorRepository.findCollaboratorByCPF(c1.getCpf());
+		Collaborator c2A = collaboratorRepository.findCollaboratorByCPF(c2.getCpf());
+		Collaborator c3A = collaboratorRepository.findCollaboratorByCPF(c3.getCpf());		
+		
+		foodsRepository.registerFoods(f1.getName(), c1A.getId());
+		foodsRepository.registerFoods(f2.getName(), c2A.getId());
+		foodsRepository.registerFoods(f3.getName(), c3A.getId());
+		foodsRepository.registerFoods(f4.getName(), c1A.getId());
+		foodsRepository.registerFoods(f5.getName(), c2A.getId());
 								
 		
 	}
