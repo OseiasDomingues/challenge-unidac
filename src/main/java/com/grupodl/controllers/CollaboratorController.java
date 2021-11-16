@@ -47,7 +47,6 @@ public class CollaboratorController {
 		if(result.hasErrors()){
 			throw new FieldInvalidException("Algum campo está invalido!");
 		}
-		System.out.println(collaborator.getFoods().toString());
 		collaboratorService.insertBreakfast(collaborator);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}

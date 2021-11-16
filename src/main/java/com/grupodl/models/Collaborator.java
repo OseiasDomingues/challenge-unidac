@@ -12,11 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
-
 
 
 @Entity
@@ -32,13 +28,11 @@ public class Collaborator implements Serializable {
 	@Pattern(regexp = "(^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$)")
 	private String cpf;
 	@NotBlank
-	private String name;	
+	private String name;
 	@OneToMany(mappedBy = "collaborator")
 	private List<Food> foods = new ArrayList<>(); 
 	
-	
 		
-
 	public Collaborator() {
 	}
 
@@ -68,8 +62,6 @@ public class Collaborator implements Serializable {
 		return foods;
 	}
 	
-	
-
 	public Long getId() {
 		return id;
 	}
@@ -97,13 +89,7 @@ public class Collaborator implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Collaborator [cpf=" + cpf + ", name=" + name + ", foods=" + foods + "]";
-	}
+		return "Collaborator [id=" + id + ", cpf=" + cpf + ", name=" + name + ", foods=" + foods + "]";
+	}	
 	
-	
-	
-	
-	
-	
-
 }

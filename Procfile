@@ -1,0 +1,1 @@
+web: java -jar build/libs/desafio-unidac-0.0.1-SNAPSHOT.jar
