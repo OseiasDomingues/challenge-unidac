@@ -50,7 +50,7 @@ public class CollaboratorService {
 			} else {
 				if (i >= collaborator.getFoods().size()) {
 					collaboratorRepository.deleteCollaborator(collaboratorSave.getId());
-					throw new FieldInvalidException("Não há itens na lista");
+					throw new FieldInvalidException("Preencher pelos menos um item da lista");
 				}
 				i++;
 
@@ -66,7 +66,7 @@ public class CollaboratorService {
 
 		for (Food f : collaborator.getFoods()) {
 			if (collaborator.getName().isEmpty() || f.getId() == null || f.getName().isBlank()) {
-				throw new FieldInvalidException("Algum campo está invalido!");
+				throw new FieldInvalidException("Algum campo esta invalido!");
 			}
 			foodsRepository.updateFood(f.getId(), f.getName());
 		}
@@ -92,7 +92,7 @@ public class CollaboratorService {
 			for (Food food : collaborator.getFoods()) {
 				if (food_database.getName().toUpperCase().trim().equals(food.getName().toUpperCase().trim())) {
 					if (collaborator.getId() != food_database.getCollaborator().getId()) {
-						throw new ResourceAlreadyExistsException("O item " + food.getName() + " já existe!");
+						throw new ResourceAlreadyExistsException("O item " + food.getName() + " ja existe!");
 					}
 				}
 			}
@@ -103,7 +103,7 @@ public class CollaboratorService {
 		List<Collaborator> collaboratorList = collaboratorRepository.findAllCollaborator();
 		for (Collaborator collaborator_database : collaboratorList) {
 			if (collaborator_database.getCpf().equals(cpf)) {
-				throw new ResourceAlreadyExistsException("O CPF " + cpf + " já está registrado");
+				throw new ResourceAlreadyExistsException("O CPF " + cpf + " ja está registrado");
 			}
 		}
 
@@ -115,7 +115,7 @@ public class CollaboratorService {
 		for (Collaborator collaborator_database : collaboratorList) {
 			if (collaborator_database.getCpf().equals(cpf)) {
 				if (collaboratorCpfTest.getId() != collaborator_database.getId()) {
-					throw new ResourceAlreadyExistsException("O CPF " + cpf + " já está registrado");
+					throw new ResourceAlreadyExistsException("O CPF " + cpf + " ja está registrado");
 
 				}
 			}

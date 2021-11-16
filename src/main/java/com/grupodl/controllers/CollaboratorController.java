@@ -45,7 +45,7 @@ public class CollaboratorController {
 	@PostMapping("/collaborators")
 	public ResponseEntity<Void> insertBreakfast(@RequestBody @Valid Collaborator collaborator, BindingResult result){
 		if(result.hasErrors()){
-			throw new FieldInvalidException("Algum campo está invalido!");
+			throw new FieldInvalidException("Algum campo esta invalido.");
 		}
 		collaboratorService.insertBreakfast(collaborator);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
