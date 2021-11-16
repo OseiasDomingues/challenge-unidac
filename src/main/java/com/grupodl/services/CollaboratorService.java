@@ -50,7 +50,7 @@ public class CollaboratorService {
 			} else {
 				if (i >= collaborator.getFoods().size()) {
 					collaboratorRepository.deleteCollaborator(collaboratorSave.getId());
-					throw new FieldInvalidException("Preencher pelos menos um item da lista");
+					throw new FieldInvalidException("Preencher pelo menos um item da lista");
 				}
 				i++;
 
@@ -103,7 +103,7 @@ public class CollaboratorService {
 		List<Collaborator> collaboratorList = collaboratorRepository.findAllCollaborator();
 		for (Collaborator collaborator_database : collaboratorList) {
 			if (collaborator_database.getCpf().equals(cpf)) {
-				throw new ResourceAlreadyExistsException("O CPF " + cpf + " ja está registrado");
+				throw new ResourceAlreadyExistsException("O CPF " + cpf + " ja esta registrado");
 			}
 		}
 
@@ -115,7 +115,7 @@ public class CollaboratorService {
 		for (Collaborator collaborator_database : collaboratorList) {
 			if (collaborator_database.getCpf().equals(cpf)) {
 				if (collaboratorCpfTest.getId() != collaborator_database.getId()) {
-					throw new ResourceAlreadyExistsException("O CPF " + cpf + " ja está registrado");
+					throw new ResourceAlreadyExistsException("O CPF " + cpf + " ja esta registrado");
 
 				}
 			}
@@ -129,7 +129,7 @@ public class CollaboratorService {
 			for (Food y : collaborator.getFoods()) {
 				if (x.getName().toUpperCase().trim().equals(y.getName().toUpperCase().trim())) {
 					if (i >= 2 && !x.getName().isBlank()) {
-						throw new ResourceAlreadyExistsException("O item " + x.getName() + " está duplicado!");
+						throw new ResourceAlreadyExistsException("O item " + x.getName() + " esta duplicado!");
 					}
 					i++;
 				}
